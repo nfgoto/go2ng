@@ -1,5 +1,19 @@
-<nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+<nav class="navbar navbar-dark navbar-expand-lg bg-dark navbar-expand">
   <div class="container">
-    <a href="#" class="navbar-brand">Go2Ng</a>
+    <a routerLink="/" class="navbar-brand">Go2Ng</a>
+    <div>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+          <a class="nav-link" routerLink="/">Home</a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+          <a class="nav-link" routerLink="/posts">Posts</a>
+        </li>I
+        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+          <a class="nav-link" routerLink="/users">Users</a>
+        </li>
+
+      </ul>
+    </div>
   </div>
 </nav>

@@ -67,12 +67,7 @@ export class PostsComponent implements OnInit {
           this.posts = this.posts.filter(p => {
             return p.id !== post.id;
           }
-          )
-          // this.posts.forEach((p, idx) => {
-          //   if (p.id === delPost.id) {
-          //     this.posts.splice(idx, 1);
-          //   }
-          // });
+          );
         }
       );
     }

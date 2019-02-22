@@ -13,13 +13,18 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class PostsService {
-  postsUrl: string = 'https://jsonplaceholder.typicode.com/posts';
+  private postsUrl: string = 'https://jsonplaceholder.typicode.com/posts';
 
   constructor(private http: HttpClient) { }
 
   getPosts(): Observable<Post[]> {
     // httpClient methods return an observable
     return this.http.get<Post[]>(this.postsUrl);
+  }
+
+  getPost(id: number): Observable<Post> {
+    const postUrl = `${this.postsUrl}/${id}`;
+    return this.http.get<Post>(postUrl);
   }
 
   addPost(post: Post): Observable<Post> {

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from 'src/app/models/user';
+import { UserService as UserService } from '../../services/user.service';
 
 const initialUserState: User = {
   firstName: '',
@@ -27,50 +28,39 @@ export class UsersComponent implements OnInit {
   showUserForm: boolean = false;
   @ViewChild('userForm') form: any;
 
-  constructor() { }
+  data: any;
 
-  // eauivalent of componentDidMount in React
+  // inject service depencies
+  constructor(private userService: UserService) { }
+
   ngOnInit() {
-    // you mutate properties in here, rather than in the constructor
+    // you mutate properties in here, rather than in constructor
 
-    this.users = [
-      {
-        firstName: 'Toto',
-        lastName: 'GOTO',
-        email: 'toto@mail.com',
-        isActive: false,
-        registered: new Date('11/08/2017 11:04:11'),
-        hideDetails: true
-      },
-      {
-        firstName: 'Gojono',
-        lastName: 'Motu',
-        email: 'gojono@mail.com',
-        isActive: true,
-        registered: new Date('05/04/2011 07:15:05'),
-        hideDetails: true
-      },
-      {
-        firstName: 'Malafadha',
-        lastName: 'Dinyo',
-        email: 'malafadha@mail.com',
-        isActive: true,
-        registered: new Date('02/18/2019 08:55:32'),
-        hideDetails: true
+    // subscribe / watch an observable
+    this.userService.getData().subscribe(
+      data => {
+        console.log(data);
       }
-    ];
 
-    this.loaded = true;
+    );
+
+    // get users from injected service method asynchronously
+    this.userService.getUsers().subscribe(
+      users => {
+        this.users = users;
+        this.loaded = true;
+      }
+    );
   }
 
   onSubmit({ value, valid }: { value: User, valid: boolean }) {
     if (!valid) {
-      console.log('Form not valid')
+      console.log('Form not valid');
     } else {
       value.isActive = true;
       value.registered = new Date();
       value.hideDetails = true;
-      this.users.unshift(value);
+      this.userService.addUser(value);
 
       this.form.reset();
     }

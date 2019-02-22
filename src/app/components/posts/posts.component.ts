@@ -30,7 +30,13 @@ export class PostsComponent implements OnInit {
   }
 
   onNewPostHandler(post: Post) {
-    this.posts.unshift(post);
+    const addedPost = {
+      ...post,
+      // because JSON placeholder API always return id = 101
+      id: this.posts.length + 1
+    };
+    this.posts.unshift(addedPost);
+    // reset form
     this.currentPost = { ...initialCurrentPostSate };
   }
 
@@ -55,7 +61,16 @@ export class PostsComponent implements OnInit {
 
   deletePost(post: Post) {
     if (confirm('Are you sure')) {
-      this.posts = this.posts.filter(p => p.id !== post.id);
+      // this.posts = this.posts.filter(p => p.id !== post.id);
+      this.postService.deletePost(post).subscribe(
+        delPost => {
+          this.posts.forEach((p, idx) => {
+            if (p.id === delPost.id) {
+              this.posts.splice(idx, 1);
+            }
+          });
+        }
+      );
     }
   }
 }

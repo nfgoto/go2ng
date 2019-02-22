@@ -23,7 +23,7 @@ export class PostFormComponent implements OnInit {
 
   addPost(title: string, body: string) {
     if (!title || !body) {
-      alert('Please Enter a Psot');
+      alert('Please Enter a Post');
     } else {
       this.postService.addPost({ title, body } as Post).subscribe(
         post => {
@@ -36,11 +36,21 @@ export class PostFormComponent implements OnInit {
     }
   }
   updatePost() {
-    this.postService.editPost(this.currentPostInForm).subscribe(
+    // because JSON placeholder API does not allow to PUT on id > 100
+    const editedPost = {
+      ...this.currentPostInForm,
+      id: 1
+    };
+    this.postService.editPost(editedPost).subscribe(
       updatedPost => {
-        console.log(updatedPost);
+        const toto = {
+          ...updatedPost,
+          id: this.currentPostInForm.id
+        };
+
         this.isEditForm = false;
-        this.updatedPostEvent.emit(updatedPost);
+        // emit post with original id
+        this.updatedPostEvent.emit(toto);
       }
     );
   }
